@@ -7,7 +7,7 @@ id = "e0abc200-a578-4e3a-bd1a-eded0c32a245"
 license = "Elastic License v2"
 name = "Direct Syscall via Assembly Bytes"
 os_list = ["windows"]
-version = "1.0.22"
+version = "1.0.23"
 
 query = '''
 any where process.executable != null and
@@ -50,12 +50,22 @@ not process.executable :
              "?:\\Users\\*\\AppData\\Local\\Microsoft\\EdgeWebView\\Application\\*\\msedgewebview2.exe", 
              "?:\\Users\\*\\AppData\\Local\\Microsoft\\Teams\\*\\Teams.exe", 
              "?:\\Program Files\\Veeam\\Endpoint Backup\\Veeam.EndPoint.Manager.exe",
-             "?:\\Program Files\\Netmarble\\Netmarble Game\\*") and
+             "?:\\Program Files\\Netmarble\\Netmarble Game\\*",
+             "?:\\Program Files (x86)\\SolarWinds\\Agent\\Plugins\\ADMProbe\\SolarWinds.ADM.AgentPlugin.exe",
+             "?:\\Program Files (x86)\\Adobe\\Acrobat Reader DC\\Reader\\AcroCEF\\RdrCEF.exe",
+             "?:\\Program Files\\New Relic\\newrelic-infra\\newrelic-integrations\\nr-winpkg.exe") and
  not (process.code_signature.subject_name in~ 
                ("Google LLC", "Mozilla Corporation", "Rockstar Games, Inc.", "Commvault Systems, Inc.", "Galooli Ltd", "TOTVS S.A", "ROBLOX CORPORATION",
                 "Roblox Corporation", "SIGNODE PACKAGING GROUP NZ", "GraphOn Corporation", "Blizzard Entertainment, Inc.", "343 Industries (Microsoft Corporation)") and
       process.code_signature.trusted == true) and
- not (process.executable : "?:\\Windows\\System32\\LogonUI.exe" and process.parent.executable : "?:\\Windows\\System32\\winlogon.exe") and 
+ not (process.executable : "?:\\Windows\\System32\\LogonUI.exe" and process.parent.executable : "?:\\Windows\\System32\\winlogon.exe") and
+ not (process.executable : "?:\\Windows\\System32\\auditpol.exe" and process.parent.executable : "?:\\Program Files\\ColorTokens\\LGM\\ct-lgm.exe") and
+ not (process.executable : "?:\\Windows\\Microsoft.NET\\Framework*\\cvtres.exe" and process.code_signature.trusted == true and process.code_signature.subject_name : "Microsoft Corporation") and
+ not (process.executable : "?:\\Windows\\System32\\quser.exe" and process.parent.executable : "?:\\Windows\\LTSvc\\LTSVC.exe") and
+ not (process.executable : "?:\\Windows\\SysWOW64\\sc.exe" and process.parent.executable : "?:\\Program Files (x86)\\NinjaRMMAgent\\NinjaRMMAgent.exe") and
+ not (process.executable : "?:\\Windows\\Microsoft.NET\\Framework*\\csc.exe" and process.code_signature.trusted == true and process.code_signature.subject_name : "Microsoft Corporation") and
+ not (process.executable : "?:\\Windows\\Microsoft.NET\\Framework*\\ngen.exe" and process.code_signature.trusted == true and process.code_signature.subject_name : "Microsoft Corporation") and
+ not (process.executable : "?:\\Windows\\System32\\cscript.exe" and process.parent.executable : "?:\\Program Files\\Microsoft Monitoring Agent\\Agent\\MonitoringHost.exe") and
  /* chromium and last one for Acrobat */
  not _arraysearch(process.thread.Ext.call_stack, $entry,
                    $entry.callsite_trailing_bytes :

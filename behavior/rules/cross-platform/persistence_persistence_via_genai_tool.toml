@@ -10,8 +10,9 @@ os_list = ["macos", "windows"]
 reference = [
     "https://cymulate.com/blog/cve-2025-547954-54795-claude-inverseprompt/",
     "https://specterops.io/blog/2025/11/21/an-evening-with-claude-code/",
+    "https://www.straiker.ai/blog/nomshub-cursor-remote-tunneling-sandbox-breakout",
 ]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 sequence by process.entity_id with maxspan=1m
@@ -35,7 +36,10 @@ sequence by process.entity_id with maxspan=1m
                "/home/*/.bash_profile1",
                "/home/*/.bashrc",
                "/Users/*/.bash_profile",
+               "/Users/*/.bashrc",
                "/Users/*/.zshenv",
+               "/Users/*/.zshrc",
+               "/Users/*/.zprofile",
                "/etc/sudoers",
                "/Users/*/Library/Preferences/com.apple.Terminal.plist",
                "/System/Library/LaunchAgents/*.plist",

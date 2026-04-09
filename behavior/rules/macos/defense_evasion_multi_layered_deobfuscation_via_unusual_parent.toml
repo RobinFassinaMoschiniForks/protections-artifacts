@@ -8,11 +8,11 @@ license = "Elastic License v2"
 name = "Multi-Layered Deobfuscation via Unusual Parent"
 os_list = ["macos"]
 reference = ["https://x.com/MsftSecIntel/status/1891410993265123662"]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 sequence with maxspan=5s
-[process where event.type == "start" and event.action == "exec" and process.name in ("osascript", "bash", "sh", "zsh") and
+[process where event.type == "start" and event.action == "exec" and (process.name in ("osascript", "bash", "sh", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and
   process.args_count <= 3 and
   process.args in ("-c", "-e") and
   process.args like "echo*" and

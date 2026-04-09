@@ -12,36 +12,18 @@ reference = [
     "https://www.tiraniddo.dev/2017/07/dg-on-windows-10-s-executing-arbitrary.html",
     "https://www.netspi.com/blog/technical/adversary-simulation/re-animating-activitysurrogateselector/",
 ]
-version = "1.0.20"
+version = "1.0.21"
 
 query = '''
 process where event.action == "start" and process.parent.name : "?*" and
- (
-  ((process.name : "AddInProcess.exe" or process.pe.original_file_name == "AddInProcess.exe") and
+  (process.name : "AddInProcess.exe" or process.pe.original_file_name == "AddInProcess.exe") and
 
    /* guid point to the pipe name used to pass the malicious assembly and pid point to a running process to wait for before exit */
-   process.args : "/guid*" and process.args : "/pid*") or
+   process.args : "/guid*" and process.args : "/pid*" and 
 
-   descendant of [process where event.action == "start" and
-                  (process.name : "AddInProcess.exe" or process.pe.original_file_name == "AddInProcess.exe") and
-                  process.args : "/guid*" and process.args : "/pid*"]
-   ) and
+   not process.parent.executable : ("?:\\Program Files\\Autodesk\\*.exe",  "?:\\Program Files\\KAPPA\\Workstation *\\Launcher\\KAPPA.exe") and
 
-   not process.parent.executable : "?:\\Program Files\\Autodesk\\*.exe" and
-
-   not (process.parent.code_signature.subject_name == "Autodesk, Inc." and process.parent.code_signature.trusted == true) and
-
-   not (process.code_signature.trusted == true and process.code_signature.subject_name : ("Autodesk, Inc.", "KAPPA Engineering")) and
-   
-   not (process.parent.code_signature.subject_name : "KAPPA Engineering" and process.parent.code_signature.trusted == true) and
-
-    not process.parent.executable : "?:\\Program Files\\KAPPA\\Workstation *\\Launcher\\KAPPA.exe" and
-
-   not descendant of [process where event.action == "start" and
-                      process.executable : ("?:\\Program Files\\KAPPA\\Workstation*\\Launcher\\KAPPA.exe",  "?:\\Program Files\\Autodesk\\*.exe")] and
-
-   not (process.executable : ("?:\\Windows\\System32\\conhost.exe", "?:\\Windows\\System32\\WerFault.exe") and
-        process.parent.executable : "?:\\Windows\\Microsoft.NET\\Framework*\\AddInProcess.exe")
+   not (process.parent.code_signature.subject_name : ("Autodesk, Inc.", "KAPPA Engineering") and process.parent.code_signature.trusted == true)
 '''
 
 min_endpoint_version = "8.10.0"

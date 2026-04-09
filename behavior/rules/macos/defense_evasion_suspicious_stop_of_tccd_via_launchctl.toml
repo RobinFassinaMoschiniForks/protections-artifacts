@@ -8,7 +8,7 @@ id = "ffda6af2-fa65-4ef6-88a4-318b396844fe"
 license = "Elastic License v2"
 name = "Suspicious Stop of TCCD via Launchctl"
 os_list = ["macos"]
-version = "1.0.14"
+version = "1.0.15"
 
 query = '''
 process where event.type == "start" and 
@@ -19,7 +19,7 @@ process where event.type == "start" and
             process.args like~ "com.apple.tccd"
         ) or 
         (
-            process.name in ("sh", "zsh", "bash") and
+            (process.name in ("sh", "zsh", "bash", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and
             process.args == "-c" and
             process.args like~ "*com.apple.tccd"
         )

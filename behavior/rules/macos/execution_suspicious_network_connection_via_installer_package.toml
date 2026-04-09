@@ -11,13 +11,13 @@ license = "Elastic License v2"
 name = "Suspicious Network Connection via Installer Package"
 os_list = ["macos"]
 reference = ["https://redcanary.com/blog/clipping-silver-sparrows-wings"]
-version = "1.0.38"
+version = "1.0.39"
 
 query = '''
 sequence by user.id with maxspan=30s
 [process where event.type == "start" and event.action == "exec" and 
   process.parent.name in ("installer", "package_script_service") and 
-  process.name like~ ("bash", "sh", "zsh", "python*", "osascript", "tclsh*") and
+  process.name like ("bash", "sh", "zsh", "dash", "csh", "tcsh", "ksh", "fish", "python*", "osascript", "tclsh*") and
   process.args like ("/Users/*", "/Volumes/*")] 
 [process where event.type == "start" and 
  process.parent.pid == 1 and 

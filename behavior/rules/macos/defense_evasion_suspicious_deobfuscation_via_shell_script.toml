@@ -9,11 +9,11 @@ license = "Elastic License v2"
 name = "Suspicious Deobfuscation via Shell Script"
 os_list = ["macos"]
 reference = ["https://x.com/MsftSecIntel/status/1891410993265123662"]
-version = "1.0.3"
+version = "1.0.4"
 
 query = '''
 sequence by process.Ext.effective_parent.entity_id with maxspan=10s
-[process where event.type == "start" and event.action == "exec" and process.name in ("sh", "bash", "zsh") and process.args == "-c" and process.command_line == null and process.args_count > 2]
+[process where event.type == "start" and event.action == "exec" and (process.name in ("sh", "bash", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and process.args == "-c" and process.command_line == null and process.args_count > 2]
 [process where event.type == "start" and event.action == "exec" and process.name in ("base64", "xxd")]
 '''
 

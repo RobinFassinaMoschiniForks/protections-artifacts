@@ -7,7 +7,7 @@ id = "43e9d254-28e9-463d-9bc3-5e51721d4b8a"
 license = "Elastic License v2"
 name = "Suspicious API call via a Windows Installer Module"
 os_list = ["windows"]
-version = "1.0.9"
+version = "1.0.10"
 
 query = '''
 api where process.name : "msiexec.exe" and
@@ -39,7 +39,11 @@ api where process.name : "msiexec.exe" and
                                            "0c9891da5c64a519c11e7603a41e93e0ff3057cca238ee59ffb5b4a82985011a",
                                            "80f84a7b8aad0bdceba677e6a501f71b6b57878e34b6b557e1892083a32b7bd5",
                                            "0297e306edf0a868e1edffa4de158906142f131b550061a7d68cca721482a953",
-                                           "7d6d4599a9347ee8ad9af3092d2a8b5b55517d609b46eef5e75a8f127ec085e5")
+                                           "7d6d4599a9347ee8ad9af3092d2a8b5b55517d609b46eef5e75a8f127ec085e5",
+                                           "ed3d26467ce009c6267549b842893f9a5c40aeb9c8cc0f47d2182a65875abb07",
+                                           "9437b711f5d1c8377d618eeec4d282f15c9c8029c8f3ae562df34ae53609db38",
+                                           "9996cbc90d486af7107d85c1802b2c595f0c3bd515ff501fe29a6f89bdf18d6d",
+                                           "14d6dbb1c27e0fef0f53720aefb391a3b4396cbf2b7d05eb1b0667a28f1f1d05")
 '''
 
 min_endpoint_version = "8.10.0"

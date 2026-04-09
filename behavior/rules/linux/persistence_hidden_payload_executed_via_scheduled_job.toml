@@ -13,7 +13,7 @@ reference = [
     "https://intezer.com/blog/research/kaiji-new-chinese-linux-malware-turning-to-golang/",
     "https://www.elastic.co/security-labs/primer-on-persistence-mechanisms",
 ]
-version = "1.0.22"
+version = "1.0.23"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and (
@@ -43,11 +43,12 @@ process where event.type == "start" and event.action == "exec" and (
   ) or
   process.command_line like (
     "*/home/*/.*.*", "*/opt/invgate/insight-agent/*", "*ansible*", "/bin/sh -c /backup/store_Weight_LABEL/.create_site.sh*",
-    "/bin/sh -c /backup/mktphotos/.main*.sh", "/bin/bash -c unset*/var/.cagefs'", "/bin/sh -c *autorestic*"
+    "/bin/sh -c /backup/mktphotos/.main*.sh", "/bin/bash -c unset*/var/.cagefs'", "/bin/sh -c *autorestic*", "*/opt/export-ecs-ip/ecs-ip.py*"
   ) or
   process.args like (
     "/usr/sbin/tmpwatch*", "/usr/sap/*", "sed*", "*/../*", "cd ~/.unison*", "/usr/sbin/logrotate*",
-    "/home/raulsiim/.local/share/JetBrains/Toolbox/apps/intellij-idea-community-edition/bin/idea"
+    "/home/raulsiim/.local/share/JetBrains/Toolbox/apps/intellij-idea-community-edition/bin/idea",
+    "/usr/bin/flock*"
   ) or
   process.executable like (
     "/opt/eset/eei/bin/*", "/tmp/newroot/tmp/.mount_*", "/tmp/.mount_*", "/opt/gotify/gotify-linux-amd64",
@@ -56,7 +57,7 @@ process where event.type == "start" and event.action == "exec" and (
     "/home/*/.local/bin/gitsign-credential-cache",
     "/home/*/.local/share/JetBrains/Toolbox/apps/intellij-idea-ultimate/bin/idea",
     "/home/*/.local/share/JetBrains/*", "/home/*/.local/opt/activitywatch/*",
-    "/home/*/.local/bin/claude-oauth-proxy"
+    "/home/*/.local/bin/claude-oauth-proxy", "/root/.local/openaev-agent-session/openaev-agent"
   ) or
   process.name in ("riptide-agent", "zellij", "gitsign-credential-cache", "jetbrains-toolbox", "goland") or
   process.working_directory == "/var/lib/rabbitmq"

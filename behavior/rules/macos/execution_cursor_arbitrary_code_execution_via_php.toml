@@ -10,11 +10,11 @@ license = "Elastic License v2"
 name = "Cursor Arbitrary Code Execution via PHP"
 os_list = ["macos"]
 reference = ["https://www.imperva.com/blog/cursors-magic-comes-with-a-catch-missing-trust-setting/"]
-version = "1.0.4"
+version = "1.0.5"
 
 query = '''
 process where event.type == "start" and event.action == "exec" and process.parent.code_signature.team_id == "VDXQ22DGB9" and
-  process.name in ("bash", "sh", "zsh") and process.args like "/Users/*/.vscode/run" and
+  (process.name in ("bash", "sh", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and process.args like "/Users/*/.vscode/run" and
   process.args like "/Users/*.php"
 '''
 

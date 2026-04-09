@@ -7,11 +7,11 @@ id = "c99b8b83-2b2c-43b0-a962-ddb0274c6939"
 license = "Elastic License v2"
 name = "Suspicious DD Execution"
 os_list = ["macos"]
-version = "1.0.8"
+version = "1.0.9"
 
 query = '''
 sequence by process.Ext.effective_parent.entity_id with maxspan=15s
-[process where event.type == "start" and event.action == "exec" and (process.name in ("bash", "sh", "zsh", "osascript") or (process.code_signature.trusted == false or process.code_signature.exists == false)) and
+[process where event.type == "start" and event.action == "exec" and (process.name in ("bash", "sh", "zsh", "osascript", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*" or (process.code_signature.trusted == false or process.code_signature.exists == false)) and
   not process.Ext.effective_parent.executable like ("/Library/Addigy/go-agent", 
                                                     "/usr/local/bin/amagent",
                                                     "/Applications/Support.app/Contents/MacOS/Support",

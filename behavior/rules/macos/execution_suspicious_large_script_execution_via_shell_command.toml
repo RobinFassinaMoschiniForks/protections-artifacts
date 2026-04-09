@@ -10,11 +10,11 @@ os_list = ["macos"]
 reference = [
     "https://www.sentinelone.com/blog/xcsset-malware-update-macos-threat-actors-prepare-for-life-without-python/",
 ]
-version = "1.0.2"
+version = "1.0.3"
 
 query = '''
-process where event.type == "start" and event.action == "exec" and process.name in ("bash", "sh", "zsh") and process.args == "-c" and process.command_line == null and process.args_count <= 4 and
- (process.parent.name like~ ("osascript", "python*", "node", "sh", "bash", "zsh") or (process.parent.code_signature.trusted == false or process.parent.code_signature.exists == false))
+process where event.type == "start" and event.action == "exec" and (process.name in ("bash", "sh", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and process.args == "-c" and process.command_line == null and process.args_count <= 4 and
+ (process.parent.name like~ ("osascript", "python*", "node", "sh", "bash", "zsh", "dash", "csh", "tcsh", "ksh", "fish", "tclsh*") or (process.parent.code_signature.trusted == false or process.parent.code_signature.exists == false))
 '''
 
 min_endpoint_version = "8.11.0"

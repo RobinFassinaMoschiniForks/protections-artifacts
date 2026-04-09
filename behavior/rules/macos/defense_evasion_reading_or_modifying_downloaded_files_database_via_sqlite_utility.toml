@@ -9,11 +9,11 @@ license = "Elastic License v2"
 name = "Reading or Modifying Downloaded Files Database via SQLite Utility"
 os_list = ["macos"]
 reference = ["https://redcanary.com/blog/clipping-silver-sparrows-wings/"]
-version = "1.0.29"
+version = "1.0.30"
 
 query = '''
 process where event.action == "exec" and
- process.name in ("sqlite3", "bash", "sh") and process.command_line : "*sqlite*LSQuarantineDataURLString*" and
+ (process.name in ("sqlite3", "bash", "sh", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and process.command_line : "*sqlite*LSQuarantineDataURLString*" and
  (process.parent.code_signature.trusted == false or process.parent.code_signature.exists == false)
 '''
 

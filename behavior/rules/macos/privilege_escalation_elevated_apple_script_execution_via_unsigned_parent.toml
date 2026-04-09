@@ -8,13 +8,13 @@ license = "Elastic License v2"
 name = "Elevated Apple Script Execution via Unsigned Parent"
 os_list = ["macos"]
 reference = ["https://discussions.apple.com/thread/2266150"]
-version = "1.0.25"
+version = "1.0.26"
 
 query = '''
 sequence with maxspan=1m
  [process where event.action == "exec" and
   (process.code_signature.trusted == false or process.code_signature.exists == false)] by process.entity_id
- [process where event.action == "exec" and process.name in ("osascript", "sh", "bash", "zsh") and
+ [process where event.action == "exec" and (process.name in ("osascript", "sh", "bash", "zsh", "dash", "csh", "tcsh", "ksh", "tclsh", "fish") or process.name like "tclsh*") and
   process.command_line like~ "*osascript*with administrator privileges*"] by process.parent.entity_id
 '''
 
